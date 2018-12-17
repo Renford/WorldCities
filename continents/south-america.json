@@ -1,0 +1,16 @@
+[
+  { "zhName": "阿根廷", "enName": "Argentina" },
+  { "zhName": "巴拉圭", "enName": "Paraguay" },
+  { "zhName": "巴西", "enName": "Brazil" },
+  { "zhName": "秘鲁", "enName": "Peru" },
+  { "zhName": "玻利维亚", "enName": "Bolivia" },
+  { "zhName": "厄瓜多尔", "enName": "Ecuador" },
+  { "zhName": "法属圭亚那", "enName": "French Guiana" },
+  { "zhName": "福克兰群岛（马尔维纳斯群岛）", "enName": "Falkland Islands" },
+  { "zhName": "哥伦比亚", "enName": "Colombia" },
+  { "zhName": "圭亚那", "enName": "Guyana" },
+  { "zhName": "苏里南", "enName": "Suriname" },
+  { "zhName": "委内瑞拉", "enName": "Venezuela" },
+  { "zhName": "乌拉圭", "enName": "Uruguay" },
+  { "zhName": "智利", "enName": "Chile" }
+]
