@@ -7,10 +7,8 @@ import zlib
 
 # 网页数据解压
 def htmlDecompress(response):
-
     html = response.read()
     encoding = response.info().get('Content-Encoding')
-    print("encoding===11111=====", encoding)
 
     if encoding == 'gzip':
         html = zlib.decompress(html, zlib.MAX_WBITS + 16)
@@ -22,7 +20,6 @@ def htmlDecompress(response):
             html = zlib.decompress(html)
 
     encoding = chardet.detect(html)["encoding"]
-    print("encoding===22222=====", encoding)
 
     return html
 
