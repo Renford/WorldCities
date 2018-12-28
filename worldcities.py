@@ -1,25 +1,31 @@
-from urllib import request
 import re
 import json
 import chardet
 import zlib
+import urllib3
+
+urllib3.disable_warnings()
 
 
 # 网页数据解压
 def htmlDecompress(response):
-    html = response.read()
-    encoding = response.info().get('Content-Encoding')
+    html = response.data
+    # encoding = response.info().get('Content-Encoding')
+    # print('====encoding==========================,', zlib.MAX_WBITS | 16)
+    # if encoding == 'gzip':
+    #     print('====encoding==========================,1111111')
+    #     # html = zlib.decompress(html, zlib.MAX_WBITS | 16)
+    # elif encoding == 'zlib':
+    #     html = zlib.decompress(html, zlib.MAX_WBITS)
+    # elif encoding == 'deflate':
+    #     try:
+    #         html = zlib.decompress(html, -zlib.MAX_WBITS)
+    #     except Exception as e:
+    #         print('err===', e)
+    #         html = zlib.decompress(html)
 
-    if encoding == 'gzip':
-        html = zlib.decompress(html, zlib.MAX_WBITS + 16)
-    elif encoding == 'deflate':
-        try:
-            html = zlib.decompress(html, -zlib.MAX_WBITS)
-        except Exception as e:
-            print('err===', e)
-            html = zlib.decompress(html)
-
-    encoding = chardet.detect(html)["encoding"]
+    # encoding = chardet.detect(html)["encoding"]
+    # print('====encoding==========================,22222', encoding)
 
     return html
 
@@ -33,7 +39,11 @@ def country2lower(country):
 
 # 获取国际所有城市
 def getCities(url):
-    response = request.urlopen(url)
+    manager = urllib3.PoolManager()
+    response = manager.request('GET', url)
+    if (response.status != 200):
+        return []
+
     html = htmlDecompress(response)
     html = html.decode('utf-8')
 
@@ -59,19 +69,34 @@ def getCities(url):
 def writeCities(enName, zhName):
     lowerName = country2lower(enName)
     fileName = "countries/" + lowerName + ".json"
-    cities = [{"zh": zhName, "en": enName}]
+    cities = []
 
     try:
-        url = "https://place.qyer.com/" + lowerName + "/citylist-1-0-1/"
-        cities = getCities(url)
+        index = 1
+        while True:
+            url = "https://place.qyer.com/" + lowerName + "/citylist-1-0-" + str(
+                index) + "/"
+            tempCities = getCities(url)
+            index += 1
+            cities += tempCities
+
+            if len(tempCities) < 200:
+                break
+
+        if len(cities) == 0:
+            cities = [{"zh": zhName, "en": enName}]
+
+        print('====cities count:', len(cities), url)
     except Exception as e:
-        print('===write cities error: ', e)
+        print('===get cities error: ', e)
     finally:
         fileData = json.dumps(cities, ensure_ascii=False)
         fp = open(fileName, "w")
         fp.write(fileData)
         fp.close()
 
+
+# writeCities("Sweden", "瑞典")
 
 paths = [
     "africa", "antarctica", "asia", "europe", "north-america", "oceania",
