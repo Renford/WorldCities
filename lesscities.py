@@ -86,7 +86,7 @@ def writeCities(enName, zhName):
         if len(cities) == 0:
             cities = [{"zh": zhName, "en": enName}]
 
-        cities = cities[:30]
+        cities = cities[:60]
 
         print('====cities count:', len(cities), url)
     except Exception as e:
