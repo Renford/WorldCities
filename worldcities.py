@@ -1,6 +1,5 @@
 import re
 import json
-import chardet
 import zlib
 import urllib3
 
@@ -10,23 +9,6 @@ urllib3.disable_warnings()
 # 网页数据解压
 def htmlDecompress(response):
     html = response.data
-    # encoding = response.info().get('Content-Encoding')
-    # print('====encoding==========================,', zlib.MAX_WBITS | 16)
-    # if encoding == 'gzip':
-    #     print('====encoding==========================,1111111')
-    #     # html = zlib.decompress(html, zlib.MAX_WBITS | 16)
-    # elif encoding == 'zlib':
-    #     html = zlib.decompress(html, zlib.MAX_WBITS)
-    # elif encoding == 'deflate':
-    #     try:
-    #         html = zlib.decompress(html, -zlib.MAX_WBITS)
-    #     except Exception as e:
-    #         print('err===', e)
-    #         html = zlib.decompress(html)
-
-    # encoding = chardet.detect(html)["encoding"]
-    # print('====encoding==========================,22222', encoding)
-
     return html
 
 
